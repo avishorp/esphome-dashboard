@@ -1,1 +1,1 @@
-import "./esphome-main";
+import "./esphome-app";

@@ -5,14 +5,17 @@
 {% end %}
 
 {% block main %}
-<esphome-main
+<esphome-app
   version="{{ version }}"
   docsLink="{{ docs_link }}"
   {% if login_enabled %}logoutUrl="{{ relative_url }}logout"{% end %}
-></esphome-main>
+></esphome-app>
 {% end %}
 
 {% block footer %}
+<script>
+  window.basePath = "{{ relative_url }}";
+</script>
 <script
   src="{{ get_static_file_url('js/esphome/index.js') }}"
   type="module"

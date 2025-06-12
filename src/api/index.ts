@@ -11,7 +11,7 @@ export class APIError extends Error {
 }
 
 const fetchApiBase = async (
-  path: Parameters<typeof fetch>[0],
+  path: string,
   options?: Parameters<typeof fetch>[1],
 ): ReturnType<typeof fetch> => {
   if (!options) {
@@ -26,7 +26,8 @@ const fetchApiBase = async (
     // @ts-ignore
     options.headers["X-CSRFToken"] = csrfCookie;
   }
-  const resp = await fetch(path, options);
+  const fullPath = new URL(`${window.basePath}${path}`, window.location.href);
+  const resp = await fetch(fullPath, options);
   if (!resp.ok) {
     throw new APIError(`Request not successful (${resp.status})`, resp.status);
   }
@@ -34,7 +35,7 @@ const fetchApiBase = async (
 };
 
 export const fetchApiText = async (
-  path: Parameters<typeof fetch>[0],
+  path: string,
   options?: Parameters<typeof fetch>[1],
 ): Promise<string> => {
   const resp = await fetchApiBase(path, options);
@@ -42,7 +43,7 @@ export const fetchApiText = async (
 };
 
 export const fetchApiJson = async <T>(
-  path: Parameters<typeof fetch>[0],
+  path: string,
   options?: Parameters<typeof fetch>[1],
 ): Promise<T> => {
   const resp = await fetchApiBase(path, options);
@@ -59,7 +60,7 @@ export const streamLogs = (
   lineReceived?: (line: string) => void,
   abortController?: AbortController,
 ) => {
-  const url = new URL(`./${path}`, location.href);
+  const url = new URL(`${window.basePath}${path}`, window.location.href);
   url.protocol = url.protocol === "http:" ? "ws:" : "wss:";
   const socket = new WebSocket(url.toString());
 

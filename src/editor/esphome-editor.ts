@@ -16,7 +16,7 @@ import { setSchemaVersion } from "./editor-shims";
 
 // WebSocket URL Helper
 const loc = window.location;
-const wsLoc = new URL("./", `${loc.protocol}//${loc.host}${loc.pathname}`);
+const wsLoc = new URL("./", `${loc.protocol}//${loc.host}${window.basePath}`);
 wsLoc.protocol = "ws:";
 if (loc.protocol === "https:") {
   wsLoc.protocol = "wss:";
@@ -141,7 +141,7 @@ class ESPHomeEditor extends LitElement {
     // @ts-ignore
     self.MonacoEnvironment = {
       getWorkerUrl: function (moduleId: string, label: string) {
-        return "./static/js/esphome/monaco-editor/esm/vs/editor/editor.worker.js";
+        return `${window.basePath}static/js/esphome/monaco-editor/esm/vs/editor/editor.worker.js`;
       },
     };
     darkQuery.addEventListener("change", () => {
