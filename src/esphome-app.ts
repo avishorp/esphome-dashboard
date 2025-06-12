@@ -50,7 +50,8 @@ class ESPHomeApp extends LitElement {
                 }
                 return el;
             }
-        }
+        },
+        { path: '(.*)', redirect: '/' },
     ]);
 
     document.addEventListener<any>("edit-file", (ev: CustomEvent) => {
